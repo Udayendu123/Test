@@ -1,4 +1,7 @@
 package com.practice.kunalkhuswah_DSA;
+/*
+ * @Amresh Tripathy
+ */
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,26 +25,33 @@ public class MySubScriptions {
 		map.put("HT", 18.0);
 		List<String> newsPaper = new ArrayList<>();
 		Collections.addAll(newsPaper, "TOI", "Hindu", "ET", "BM", "HT");
-		list = printLissOfWeek(list, price, new ArrayList<String>(), map, newsPaper);
+		list = printLissOfWeek(list, price, new ArrayList<String>(), map, newsPaper, 0);
 		System.out.print(list);
 	}
 
 	private static List<ArrayList<String>> printLissOfWeek(List<ArrayList<String>> ans, double price,
-			ArrayList<String> temp, Map<String, Double> map, List<String> newsPaper) {
+			ArrayList<String> temp, Map<String, Double> map, List<String> newsPaper, int index) {
 		
-		for(int i = 0; i < newsPaper.size(); i++) {
-			Double tempPrice = price;
-			for(int j = i; j < newsPaper.size(); j++) {
-				if(tempPrice - map.get(newsPaper.get(j)) >= 0){
-					tempPrice -= map.get(newsPaper.get(j));
-					temp.add(newsPaper.get(j));
-				}
+		if(price >= 0) {
+			if(temp.size() > 1) {
+				List<String> rev = new ArrayList<>(temp);
+				Collections.reverse(rev);
+				if(!ans.contains(rev))
+					ans.add(new ArrayList<>(temp));
 			}
-			if(temp.size() > 1)
-				ans.add(new ArrayList<>(temp));
-			temp.clear();
 		}
+		if(index == newsPaper.size()) {
+				return ans;
+		}
+		if(index > newsPaper.size()) return ans;
 		
+		for(int i = index; i < newsPaper.size(); i++) {
+			if(!temp.contains(newsPaper.get(i))) {
+				temp.add(newsPaper.get(i));
+				ans = printLissOfWeek(ans, price - map.get(newsPaper.get(i)), temp, map, newsPaper, index  + 1);
+				temp.remove(temp.size() - 1);
+			}
+		}
 		return ans;
 	}
 }
