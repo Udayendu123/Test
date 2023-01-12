@@ -1,0 +1,47 @@
+package com.practice.kunalkhuswah_DSA;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
+public class MySubScriptions {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		double price = sc.nextDouble();
+		sc.close();
+		List<ArrayList<String>> list = new ArrayList<ArrayList<String>>();
+		
+		Map<String, Double> map = new HashMap<String, Double>();
+		map.put("TOI", 26.0);
+		map.put("Hindu", 20.5);
+		map.put("ET", 34.0);
+		map.put("BM", 10.5);
+		map.put("HT", 18.0);
+		List<String> newsPaper = new ArrayList<>();
+		Collections.addAll(newsPaper, "TOI", "Hindu", "ET", "BM", "HT");
+		list = printLissOfWeek(list, price, new ArrayList<String>(), map, newsPaper);
+		System.out.print(list);
+	}
+
+	private static List<ArrayList<String>> printLissOfWeek(List<ArrayList<String>> ans, double price,
+			ArrayList<String> temp, Map<String, Double> map, List<String> newsPaper) {
+		
+		for(int i = 0; i < newsPaper.size(); i++) {
+			Double tempPrice = price;
+			for(int j = i; j < newsPaper.size(); j++) {
+				if(tempPrice - map.get(newsPaper.get(j)) >= 0){
+					tempPrice -= map.get(newsPaper.get(j));
+					temp.add(newsPaper.get(j));
+				}
+			}
+			if(temp.size() > 1)
+				ans.add(new ArrayList<>(temp));
+			temp.clear();
+		}
+		
+		return ans;
+	}
+}
